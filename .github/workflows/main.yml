@@ -7,8 +7,15 @@ jobs:
       - uses: actions/checkout@v4
       - name: Unpack project
         run: |
-          unzip -oq project.zip -d _unz
-          cp -r _unz/invoker-mod/. .
+          ls -la
+          if ls *.zip >/dev/null 2>&1; then
+            Z=$(ls *.zip | head -n1)
+            echo "using $Z"
+            unzip -oq "$Z" -d _unz
+            cp -r _unz/invoker-mod/. .
+          elif [ -d invoker-mod ]; then
+            cp -r invoker-mod/. .
+          fi
           find src -type f
       - uses: actions/setup-java@v4
         with:
